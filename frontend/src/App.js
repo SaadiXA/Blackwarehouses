@@ -12,10 +12,7 @@ import ReviewsSection from "./components/ReviewsSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
-// Animation Systems
-import CinematicAnimations from "./animations/CinematicAnimations";
-import AdvancedEffects from "./animations/AdvancedEffects";
-import ResponsiveAnimations from "./animations/ResponsiveAnimations";
+// Animation Systems will be loaded dynamically
 
 function App() {
   useEffect(() => {
