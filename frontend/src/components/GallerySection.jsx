@@ -53,58 +53,70 @@ const GallerySection = () => {
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {galleryImages.map((image, index) => (
-            <div
-              key={image.id}
-              className="group relative overflow-hidden rounded-2xl shadow-xl 
-                       hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 
-                       cursor-pointer bg-white"
-              onClick={() => openLightbox(image, index)}
-            >
-              {/* Image */}
-              <div className="relative overflow-hidden">
-                <img
-                  src={image.url}
-                  alt={image.title}
-                  className="w-full h-64 md:h-72 object-cover transform group-hover:scale-110 
-                           transition-transform duration-700"
-                  loading="lazy"
-                />
-                
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent 
-                              opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-                
-                {/* Zoom Icon */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 
-                              group-hover:opacity-100 transition-all duration-500">
-                  <div className="bg-gold text-black p-3 rounded-full transform scale-75 
-                                group-hover:scale-100 transition-transform duration-300">
-                    <ZoomIn className="h-6 w-6" />
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <LoadingSpinner size="lg" message="جاري تحميل معرض الأعمال..." />
+          </div>
+        ) : error ? (
+          <ErrorMessage 
+            error={error}
+            onRetry={refetch}
+            title="خطأ في تحميل معرض الأعمال"
+          />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {galleryImages.map((image, index) => (
+              <div
+                key={image.id}
+                className="group relative overflow-hidden rounded-2xl shadow-xl 
+                         hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 
+                         cursor-pointer bg-white gallery-item"
+                onClick={() => openLightbox(image, index)}
+              >
+                {/* Image */}
+                <div className="relative overflow-hidden">
+                  <img
+                    src={image.image_url}
+                    alt={image.title}
+                    className="w-full h-64 md:h-72 object-cover transform group-hover:scale-110 
+                             transition-transform duration-700"
+                    loading="lazy"
+                  />
+                  
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent 
+                                opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                  
+                  {/* Zoom Icon */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 
+                                group-hover:opacity-100 transition-all duration-500">
+                    <div className="bg-gold text-black p-3 rounded-full transform scale-75 
+                                  group-hover:scale-100 transition-transform duration-300">
+                      <ZoomIn className="h-6 w-6" />
+                    </div>
+                  </div>
+
+                  {/* Content Overlay */}
+                  <div className="absolute bottom-0 right-0 left-0 p-6 text-white transform 
+                                translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 className="text-xl font-bold mb-2 leading-tight">
+                      {image.title}
+                    </h3>
+                    <p className="text-sm text-gray-200">
+                      {image.description}
+                    </p>
                   </div>
                 </div>
 
-                {/* Content Overlay */}
-                <div className="absolute bottom-0 right-0 left-0 p-6 text-white transform 
-                              translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <h3 className="text-xl font-bold mb-2 leading-tight">
-                    {image.title}
-                  </h3>
-                  <p className="text-sm text-gray-200">
-                    {image.description}
-                  </p>
+                {/* Project Number */}
+                <div className="absolute top-4 right-4 bg-gradient-to-r from-gold to-yellow-500 
+                              text-black px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                  #{String(index + 1).padStart(2, '0')}
                 </div>
               </div>
-
-              {/* Project Number */}
-              <div className="absolute top-4 right-4 bg-gradient-to-r from-gold to-yellow-500 
-                            text-black px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                #{String(index + 1).padStart(2, '0')}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* View More Button */}
         <div className="text-center mt-12">
