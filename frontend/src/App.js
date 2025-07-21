@@ -21,17 +21,22 @@ function App() {
     document.documentElement.lang = 'ar';
     
     // Initialize animation systems after DOM is ready
-    const initAnimations = () => {
-      // Initialize cinematic animations
-      window.cinematicAnimations = new CinematicAnimations();
-      
-      // Initialize advanced effects
-      window.advancedEffects = new AdvancedEffects();
-      
-      // Initialize responsive animations
-      window.responsiveAnimations = new ResponsiveAnimations();
-      
-      console.log('🎬 Cinematic animations initialized');
+    const initAnimations = async () => {
+      try {
+        // Load animation classes dynamically
+        const { default: CinematicAnimations } = await import("./animations/CinematicAnimations");
+        const { default: AdvancedEffects } = await import("./animations/AdvancedEffects");
+        const { default: ResponsiveAnimations } = await import("./animations/ResponsiveAnimations");
+        
+        // Initialize animation systems
+        window.cinematicAnimations = new CinematicAnimations();
+        window.advancedEffects = new AdvancedEffects();
+        window.responsiveAnimations = new ResponsiveAnimations();
+        
+        console.log('🎬 Cinematic animations initialized');
+      } catch (error) {
+        console.warn('⚠️ Animation initialization skipped:', error);
+      }
     };
 
     // Initialize animations after a short delay to ensure DOM is fully ready
