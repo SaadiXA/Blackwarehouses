@@ -1,10 +1,32 @@
 import React, { useState } from 'react';
 import { Star, Quote, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
-import { customerReviews, companyInfo } from '../mock/mockData';
+import { useApi } from '../hooks/useApi';
+import { reviewsApi } from '../services/api';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorMessage from './ErrorMessage';
 
 const ReviewsSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const reviewsPerSlide = 3;
+
+  // Get featured reviews
+  const { data: reviewsData, loading, error, refetch } = useApi(
+    () => reviewsApi.getFeatured(10, 4), // Get 10 reviews with min rating 4
+    []
+  );
+
+  // Get review stats
+  const { data: statsData } = useApi(
+    () => reviewsApi.getStats(),
+    []
+  );
+
+  const customerReviews = reviewsData || [];
+  const companyInfo = {
+    rating: statsData?.average_rating || 4.8,
+    reviewCount: statsData?.total_reviews || 17
+  };
+  
   const totalSlides = Math.ceil(customerReviews.length / reviewsPerSlide);
 
   const goToNext = () => {
