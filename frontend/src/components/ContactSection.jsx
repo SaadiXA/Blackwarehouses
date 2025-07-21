@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Clock, Mail, MessageSquare, User, Briefcase, Send } from 'lucide-react';
-import { contactInfo, services } from '../mock/mockData';
+import { useApiSubmit } from '../hooks/useApi';
+import { contactApi } from '../services/api';
+import LoadingSpinner from './LoadingSpinner';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +13,28 @@ const ContactSection = () => {
     message: ''
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
+  const { submit, loading, error, success, reset } = useApiSubmit(contactApi.submit);
+
+  const contactInfo = {
+    phone: "+966 56 897 9993",
+    whatsapp: "+966568979993",
+    email: "info@alsawda-warehouses.sa",
+    address: "ضحضاح، نجران 66271، المملكة العربية السعودية",
+    mapUrl: "https://g.co/kgs/wxTrhyM",
+    workingHours: {
+      weekdays: "السبت - الخميس: 8:00 ص - 11:00 م",
+      friday: "الجمعة: 4:00 م - 10:00 م"
+    }
+  };
+
+  const services = [
+    "ديكور داخلي",
+    "ديكور خارجي",
+    "المقاولات العامة",
+    "التصميم المعماري",
+    "التشطيبات الفاخرة",
+    "تجهيز المنشآت التقنية"
+  ];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,15 +42,19 @@ const ContactSection = () => {
       ...prev,
       [name]: value
     }));
+    
+    // Clear messages when user starts typing
+    if (error || success) {
+      reset();
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setSubmitMessage('تم إرسال طلبك بنجاح! سنتواصل معك في أقرب وقت.');
+    const result = await submit(formData);
+    
+    if (result.success) {
       setFormData({
         name: '',
         phone: '',
@@ -36,11 +62,7 @@ const ContactSection = () => {
         service: '',
         message: ''
       });
-      setIsSubmitting(false);
-      
-      // Clear success message after 5 seconds
-      setTimeout(() => setSubmitMessage(''), 5000);
-    }, 1000);
+    }
   };
 
   return (
