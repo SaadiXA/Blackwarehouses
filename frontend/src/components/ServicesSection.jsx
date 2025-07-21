@@ -1,7 +1,16 @@
 import React from 'react';
-import { services } from '../mock/mockData';
+import { useApi } from '../hooks/useApi';
+import { servicesApi } from '../services/api';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorMessage from './ErrorMessage';
 
 const ServicesSection = () => {
+  const { data: servicesData, loading, error, refetch } = useApi(
+    () => servicesApi.getAll(1, 20), // Get all services
+    []
+  );
+
+  const services = servicesData?.data || [];
   return (
     <section id="services" className="py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
