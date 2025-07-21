@@ -12,27 +12,43 @@ import ReviewsSection from "./components/ReviewsSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
+// Animation Systems
+import CinematicAnimations from "./animations/CinematicAnimations";
+import AdvancedEffects from "./animations/AdvancedEffects";
+import ResponsiveAnimations from "./animations/ResponsiveAnimations";
+
 function App() {
   useEffect(() => {
     // Set RTL direction for the entire document
     document.documentElement.dir = 'rtl';
     document.documentElement.lang = 'ar';
     
-    // Add Arabic fonts and FontAwesome
-    const fontsLink = document.createElement('link');
-    fontsLink.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap';
-    fontsLink.rel = 'stylesheet';
-    document.head.appendChild(fontsLink);
+    // Initialize animation systems after DOM is ready
+    const initAnimations = () => {
+      // Initialize cinematic animations
+      window.cinematicAnimations = new CinematicAnimations();
+      
+      // Initialize advanced effects
+      window.advancedEffects = new AdvancedEffects();
+      
+      // Initialize responsive animations
+      window.responsiveAnimations = new ResponsiveAnimations();
+      
+      console.log('🎬 Cinematic animations initialized');
+    };
 
-    const fontAwesome = document.createElement('link');
-    fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-    fontAwesome.rel = 'stylesheet';
-    document.head.appendChild(fontAwesome);
+    // Initialize animations after a short delay to ensure DOM is fully ready
+    setTimeout(initAnimations, 100);
 
+    // Cleanup function
     return () => {
-      // Cleanup
-      document.head.removeChild(fontsLink);
-      document.head.removeChild(fontAwesome);
+      // Cleanup animations if needed
+      if (window.cinematicAnimations) {
+        // Cleanup Three.js resources
+        if (window.cinematicAnimations.renderer) {
+          window.cinematicAnimations.renderer.dispose();
+        }
+      }
     };
   }, []);
 
