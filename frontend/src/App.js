@@ -20,36 +20,27 @@ function App() {
     document.documentElement.dir = 'rtl';
     document.documentElement.lang = 'ar';
     
-    // Initialize animation systems after DOM is ready
-    const initAnimations = async () => {
-      try {
-        // Load animation classes dynamically
-        const { default: CinematicAnimations } = await import("./animations/CinematicAnimations");
-        const { default: AdvancedEffects } = await import("./animations/AdvancedEffects");
-        const { default: ResponsiveAnimations } = await import("./animations/ResponsiveAnimations");
-        
-        // Initialize animation systems
-        window.cinematicAnimations = new CinematicAnimations();
-        window.advancedEffects = new AdvancedEffects();
-        window.responsiveAnimations = new ResponsiveAnimations();
-        
-        console.log('🎬 Cinematic animations initialized');
-      } catch (error) {
-        console.warn('⚠️ Animation initialization skipped:', error);
-      }
+    // Load and initialize animations via script tag
+    const loadAnimations = () => {
+      const script = document.createElement('script');
+      script.src = '/animations/SimpleAnimations.js';
+      script.onload = () => {
+        console.log('🎬 Animation system loaded');
+      };
+      script.onerror = () => {
+        console.warn('⚠️ Animation system failed to load, continuing without animations');
+      };
+      document.head.appendChild(script);
     };
 
-    // Initialize animations after a short delay to ensure DOM is fully ready
-    setTimeout(initAnimations, 100);
+    // Load animations after a short delay
+    setTimeout(loadAnimations, 500);
 
     // Cleanup function
     return () => {
-      // Cleanup animations if needed
+      // Cleanup any global animation references
       if (window.cinematicAnimations) {
-        // Cleanup Three.js resources
-        if (window.cinematicAnimations.renderer) {
-          window.cinematicAnimations.renderer.dispose();
-        }
+        delete window.cinematicAnimations;
       }
     };
   }, []);
