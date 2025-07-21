@@ -311,9 +311,10 @@ code {
   line-height: 1.8;
 }
 
-/* Smooth transitions for all interactive elements */
+/* Enhanced smooth transitions for all interactive elements */
 button, a, input, textarea, select {
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 /* Custom focus ring for better accessibility */
@@ -322,10 +323,11 @@ button, a, input, textarea, select {
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.5);
 }
 
-/* Hero section specific styles */
+/* Hero section specific styles with enhanced animations */
 .hero-particles {
   pointer-events: none;
   overflow: hidden;
+  will-change: transform;
 }
 
 .particle {
@@ -334,20 +336,301 @@ button, a, input, textarea, select {
   pointer-events: none;
   animation: float 5s infinite ease-in-out;
   background: linear-gradient(45deg, #FFD700, #FFA500);
+  will-change: transform, opacity;
 }
 
-/* Loading state styles */
-.skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
+/* Enhanced floating letters */
+.floating-letter {
+  display: inline-block;
+  transform-origin: center bottom;
+  will-change: transform;
+  animation: letterFloat 3s ease-in-out infinite;
 }
 
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
+@keyframes letterFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(0.5deg); }
+  50% { transform: translateY(-4px) rotate(0deg); }
+  75% { transform: translateY(-2px) rotate(-0.5deg); }
+}
+
+/* Morphing SVG animations */
+.morphing-svg {
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+  will-change: transform;
+}
+
+/* Glass morphism enhancement */
+.glass-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+/* Enhanced card breathing effect */
+.breathing-card {
+  animation: breathe 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.02) rotate(0.5deg); }
+}
+
+/* Ambient glow effects */
+.ambient-glow {
+  position: relative;
+  overflow: visible;
+}
+
+.ambient-glow::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+  animation: ambientPulse 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform, opacity;
+}
+
+@keyframes ambientPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+  50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+}
+
+/* Scroll-triggered reveals */
+.reveal-text {
+  overflow: hidden;
+  position: relative;
+}
+
+.reveal-text::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+  transform: translateX(-100%);
+  animation: textReveal 2s ease-out;
+  pointer-events: none;
+}
+
+@keyframes textReveal {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Enhanced particle system */
+.enhanced-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, transparent 70%);
+  filter: blur(1px);
+  animation: enhancedFloat 10s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes enhancedFloat {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px) scale(1) rotate(0deg); 
+    opacity: 0.4; 
   }
-  100% {
-    background-position: -200% 0;
+  25% { 
+    transform: translateY(-30px) translateX(15px) scale(1.2) rotate(90deg); 
+    opacity: 0.8; 
+  }
+  50% { 
+    transform: translateY(-50px) translateX(0px) scale(0.8) rotate(180deg); 
+    opacity: 1; 
+  }
+  75% { 
+    transform: translateY(-30px) translateX(-15px) scale(1.1) rotate(270deg); 
+    opacity: 0.6; 
+  }
+}
+
+/* Liquid blob effects */
+.liquid-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  filter: blur(40px);
+  animation: liquidMotion 15s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes liquidMotion {
+  0%, 100% { 
+    transform: translateX(0px) translateY(0px) scale(1); 
+    border-radius: 50%; 
+  }
+  33% { 
+    transform: translateX(100px) translateY(-50px) scale(1.2); 
+    border-radius: 30% 70% 50% 50%; 
+  }
+  66% { 
+    transform: translateX(-80px) translateY(80px) scale(0.9); 
+    border-radius: 70% 30% 50% 50%; 
+  }
+}
+
+/* Scroll progress enhancement */
+#scroll-progress {
+  background: linear-gradient(90deg, 
+    rgba(255, 215, 0, 0.8) 0%, 
+    rgba(255, 193, 7, 0.9) 25%, 
+    rgba(255, 165, 0, 1) 50%, 
+    rgba(255, 143, 0, 0.9) 75%, 
+    rgba(255, 215, 0, 0.8) 100%
+  );
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  animation: progressGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes progressGlow {
+  0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+  100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+}
+
+/* Aurora background enhancement */
+.aurora-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 120%;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+.aurora-1 {
+  background: radial-gradient(ellipse at 20% 70%, 
+    hsla(45, 100%, 70%, 0.15) 0%, 
+    hsla(35, 100%, 60%, 0.1) 25%, 
+    transparent 50%);
+  animation: auroraMove1 30s ease-in-out infinite;
+}
+
+.aurora-2 {
+  background: radial-gradient(ellipse at 80% 30%, 
+    hsla(50, 100%, 65%, 0.12) 0%, 
+    hsla(40, 100%, 55%, 0.08) 25%, 
+    transparent 50%);
+  animation: auroraMove2 25s ease-in-out infinite reverse;
+}
+
+@keyframes auroraMove1 {
+  0%, 100% { transform: translate(-10%, -10%) rotate(0deg) scale(1); }
+  33% { transform: translate(5%, 5%) rotate(120deg) scale(1.1); }
+  66% { transform: translate(-5%, 10%) rotate(240deg) scale(0.9); }
+}
+
+@keyframes auroraMove2 {
+  0%, 100% { transform: translate(10%, 10%) rotate(0deg) scale(1); }
+  50% { transform: translate(-15%, -5%) rotate(180deg) scale(1.2); }
+}
+
+/* Loading state enhancements */
+.skeleton {
+  background: linear-gradient(90deg, 
+    rgba(255, 215, 0, 0.1) 25%, 
+    rgba(255, 215, 0, 0.3) 50%, 
+    rgba(255, 215, 0, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 2s infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Performance optimizations */
+.gpu-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  .enhanced-particle {
+    animation-duration: 8s;
+  }
+  
+  .liquid-blob {
+    animation-duration: 12s;
+  }
+  
+  .floating-letter {
+    animation-duration: 4s;
+  }
+  
+  /* Reduce complex effects on mobile */
+  .ambient-glow::before {
+    display: none;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .enhanced-particle {
+    animation-duration: 9s;
+  }
+  
+  .liquid-blob {
+    animation-duration: 14s;
+  }
+}
+
+/* High-end desktop enhancements */
+@media (min-width: 1920px) {
+  .enhanced-particle {
+    animation-duration: 12s;
+  }
+  
+  .aurora-layer {
+    filter: blur(1px);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .enhanced-particle,
+  .liquid-blob,
+  .floating-letter,
+  .breathing-card {
+    animation: none;
+  }
+  
+  .ambient-glow::before {
+    display: none;
   }
 }
