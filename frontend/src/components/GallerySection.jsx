@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
-import { galleryImages } from '../mock/mockData';
+import { useApi } from '../hooks/useApi';
+import { projectsApi } from '../services/api';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorMessage from './ErrorMessage';
 
 const GallerySection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const { data: projectsData, loading, error, refetch } = useApi(
+    () => projectsApi.getFeatured(12), // Get 12 featured projects
+    []
+  );
+
+  const galleryImages = projectsData || [];
 
   const openLightbox = (image, index) => {
     setSelectedImage(image);
