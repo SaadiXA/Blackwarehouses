@@ -167,7 +167,7 @@ const GallerySection = () => {
           {/* Image Content */}
           <div className="max-w-5xl max-h-full flex flex-col items-center">
             <img
-              src={selectedImage.url}
+              src={selectedImage.image_url}
               alt={selectedImage.title}
               className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl"
             />
