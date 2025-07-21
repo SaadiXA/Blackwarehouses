@@ -102,110 +102,132 @@ const ReviewsSection = () => {
         </div>
 
         {/* Reviews Slider */}
-        <div className="relative">
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(${currentSlide * -100}%)` }}
-            >
-              {Array.from({ length: totalSlides }).map((_, slideIndex) => (
-                <div key={slideIndex} className="w-full flex-shrink-0">
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-2">
-                    {customerReviews
-                      .slice(slideIndex * reviewsPerSlide, (slideIndex + 1) * reviewsPerSlide)
-                      .map((review) => (
-                        <div
-                          key={review.id}
-                          className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl 
-                                   transition-all duration-500 border border-gray-100 
-                                   transform hover:-translate-y-1 relative group"
-                        >
-                          {/* Quote Icon */}
-                          <div className="absolute -top-4 right-8">
-                            <div className="bg-gradient-to-r from-gold to-yellow-500 
-                                          text-black p-3 rounded-full shadow-lg">
-                              <Quote className="h-6 w-6" />
-                            </div>
-                          </div>
-
-                          {/* Stars */}
-                          <div className="flex space-x-1 space-x-reverse mb-4 justify-center">
-                            {renderStars(review.rating)}
-                          </div>
-
-                          {/* Review Text */}
-                          <p className="text-gray-700 text-lg leading-relaxed mb-6 text-center">
-                            "{review.text}"
-                          </p>
-
-                          {/* Reviewer Info */}
-                          <div className="border-t border-gray-100 pt-4">
-                            <div className="text-center">
-                              <h4 className="font-bold text-gray-900 text-lg mb-1">
-                                {review.name}
-                              </h4>
-                              <div className="flex items-center justify-center space-x-2 space-x-reverse 
-                                            text-sm text-gray-500">
-                                <Calendar className="h-4 w-4" />
-                                <span>{formatDate(review.date)}</span>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <LoadingSpinner size="lg" message="جاري تحميل آراء العملاء..." />
+          </div>
+        ) : error ? (
+          <ErrorMessage 
+            error={error}
+            onRetry={refetch}
+            title="خطأ في تحميل آراء العملاء"
+          />
+        ) : customerReviews.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-gray-600 text-lg">لا توجد مراجعات متاحة حالياً</p>
+          </div>
+        ) : (
+          <div className="relative">
+            <div className="overflow-hidden">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(${currentSlide * -100}%)` }}
+              >
+                {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+                  <div key={slideIndex} className="w-full flex-shrink-0">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-2">
+                      {customerReviews
+                        .slice(slideIndex * reviewsPerSlide, (slideIndex + 1) * reviewsPerSlide)
+                        .map((review) => (
+                          <div
+                            key={review.id}
+                            className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl 
+                                     transition-all duration-500 border border-gray-100 
+                                     transform hover:-translate-y-1 relative group"
+                          >
+                            {/* Quote Icon */}
+                            <div className="absolute -top-4 right-8">
+                              <div className="bg-gradient-to-r from-gold to-yellow-500 
+                                            text-black p-3 rounded-full shadow-lg">
+                                <Quote className="h-6 w-6" />
                               </div>
                             </div>
-                          </div>
 
-                          {/* Google Badge */}
-                          <div className="absolute bottom-4 left-4">
-                            <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-400">
-                              <i className="fab fa-google text-blue-500"></i>
-                              <span>Google</span>
+                            {/* Stars */}
+                            <div className="flex space-x-1 space-x-reverse mb-4 justify-center">
+                              {renderStars(review.rating)}
                             </div>
+
+                            {/* Review Text */}
+                            <p className="text-gray-700 text-lg leading-relaxed mb-6 text-center">
+                              "{review.text}"
+                            </p>
+
+                            {/* Reviewer Info */}
+                            <div className="border-t border-gray-100 pt-4">
+                              <div className="text-center">
+                                <h4 className="font-bold text-gray-900 text-lg mb-1">
+                                  {review.name}
+                                </h4>
+                                <div className="flex items-center justify-center space-x-2 space-x-reverse 
+                                              text-sm text-gray-500">
+                                  <Calendar className="h-4 w-4" />
+                                  <span>{formatDate(review.date)}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Google Badge */}
+                            <div className="absolute bottom-4 left-4">
+                              <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-400">
+                                <i className="fab fa-google text-blue-500"></i>
+                                <span>Google</span>
+                              </div>
+                            </div>
+
+                            {/* Hover Border */}
+                            <div className="absolute inset-0 border-2 border-gold rounded-2xl 
+                                          opacity-0 group-hover:opacity-100 transition-opacity 
+                                          duration-300 pointer-events-none"></div>
                           </div>
-
-                          {/* Hover Border */}
-                          <div className="absolute inset-0 border-2 border-gold rounded-2xl 
-                                        opacity-0 group-hover:opacity-100 transition-opacity 
-                                        duration-300 pointer-events-none"></div>
-                        </div>
-                      ))}
+                        ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+
+            {/* Navigation Arrows */}
+            {totalSlides > 1 && (
+              <>
+                <button
+                  onClick={goToPrevious}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 
+                           bg-white text-gray-700 hover:text-gold p-3 rounded-full 
+                           shadow-xl hover:shadow-2xl transition-all duration-300 z-10"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+
+                <button
+                  onClick={goToNext}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 
+                           bg-white text-gray-700 hover:text-gold p-3 rounded-full 
+                           shadow-xl hover:shadow-2xl transition-all duration-300 z-10"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+              </>
+            )}
           </div>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={goToPrevious}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 
-                     bg-white text-gray-700 hover:text-gold p-3 rounded-full 
-                     shadow-xl hover:shadow-2xl transition-all duration-300 z-10"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
-
-          <button
-            onClick={goToNext}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 
-                     bg-white text-gray-700 hover:text-gold p-3 rounded-full 
-                     shadow-xl hover:shadow-2xl transition-all duration-300 z-10"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-        </div>
+        )}
 
         {/* Slide Indicators */}
-        <div className="flex justify-center space-x-2 space-x-reverse mt-8">
-          {Array.from({ length: totalSlides }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                currentSlide === index 
-                  ? 'bg-gold shadow-lg' 
-                  : 'bg-gray-300 hover:bg-gray-400'
-              }`}
-            />
-          ))}
-        </div>
+        {totalSlides > 1 && (
+          <div className="flex justify-center space-x-2 space-x-reverse mt-8">
+            {Array.from({ length: totalSlides }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  currentSlide === index 
+                    ? 'bg-gold shadow-lg' 
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Call to Action */}
         <div className="mt-16 text-center">
