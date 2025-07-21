@@ -28,60 +28,72 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <div
-              key={service.id}
-              className="group relative bg-white rounded-2xl shadow-xl hover:shadow-2xl 
-                       transition-all duration-500 transform hover:-translate-y-2 
-                       border border-gray-100 overflow-hidden"
-              style={{
-                animationDelay: `${index * 0.1}s`
-              }}
-            >
-              {/* Gradient Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-yellow-100/30 
-                            opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Content */}
-              <div className="relative p-8 text-center">
-                {/* Icon */}
-                <div className="inline-flex items-center justify-center w-20 h-20 
-                              bg-gradient-to-r from-gold to-yellow-500 text-black 
-                              rounded-2xl mb-6 transform group-hover:scale-110 
-                              transition-transform duration-300 shadow-lg">
-                  <i className={`${service.icon} text-2xl`}></i>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <LoadingSpinner size="lg" message="جاري تحميل الخدمات..." />
+          </div>
+        ) : error ? (
+          <ErrorMessage 
+            error={error}
+            onRetry={refetch}
+            title="خطأ في تحميل الخدمات"
+          />
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <div
+                key={service.id}
+                className="group relative bg-white rounded-2xl shadow-xl hover:shadow-2xl 
+                         transition-all duration-500 transform hover:-translate-y-2 
+                         border border-gray-100 overflow-hidden service-card"
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                {/* Gradient Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-yellow-100/30 
+                              opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Content */}
+                <div className="relative p-8 text-center">
+                  {/* Icon */}
+                  <div className="inline-flex items-center justify-center w-20 h-20 
+                                bg-gradient-to-r from-gold to-yellow-500 text-black 
+                                rounded-2xl mb-6 transform group-hover:scale-110 
+                                transition-transform duration-300 shadow-lg">
+                    <i className={`${service.icon} text-2xl`}></i>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 
+                               group-hover:text-gray-800 transition-colors duration-300">
+                    {service.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-gray-600 leading-relaxed text-lg 
+                               group-hover:text-gray-700 transition-colors duration-300">
+                    {service.description}
+                  </p>
+
+                  {/* Hover Border */}
+                  <div className="absolute bottom-0 right-0 left-0 h-1 
+                                bg-gradient-to-r from-gold to-yellow-500 
+                                transform scale-x-0 group-hover:scale-x-100 
+                                transition-transform duration-500 origin-right"></div>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 
-                             group-hover:text-gray-800 transition-colors duration-300">
-                  {service.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-gray-600 leading-relaxed text-lg 
-                             group-hover:text-gray-700 transition-colors duration-300">
-                  {service.description}
-                </p>
-
-                {/* Hover Border */}
-                <div className="absolute bottom-0 right-0 left-0 h-1 
-                              bg-gradient-to-r from-gold to-yellow-500 
-                              transform scale-x-0 group-hover:scale-x-100 
-                              transition-transform duration-500 origin-right"></div>
+                {/* Service Number */}
+                <div className="absolute top-4 left-4 w-8 h-8 
+                              bg-gradient-to-r from-gold to-yellow-500 text-black 
+                              rounded-full flex items-center justify-center 
+                              font-bold text-sm shadow-lg">
+                  {index + 1}
+                </div>
               </div>
-
-              {/* Service Number */}
-              <div className="absolute top-4 left-4 w-8 h-8 
-                            bg-gradient-to-r from-gold to-yellow-500 text-black 
-                            rounded-full flex items-center justify-center 
-                            font-bold text-sm shadow-lg">
-                {service.id}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Call to Action */}
         <div className="mt-16 text-center">
