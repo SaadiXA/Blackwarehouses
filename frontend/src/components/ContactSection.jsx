@@ -298,15 +298,15 @@ const ContactSection = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={loading}
                 className="w-full bg-gradient-to-r from-gold to-yellow-500 text-black py-4 
                          rounded-lg text-lg font-bold hover:from-yellow-500 hover:to-gold 
                          transform hover:scale-105 transition-all duration-300 
                          shadow-xl hover:shadow-2xl disabled:opacity-70 disabled:cursor-not-allowed 
                          flex items-center justify-center space-x-2 space-x-reverse"
               >
-                {isSubmitting ? (
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-black border-t-transparent"></div>
+                {loading ? (
+                  <LoadingSpinner size="sm" color="black" />
                 ) : (
                   <>
                     <Send className="h-5 w-5" />
